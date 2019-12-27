@@ -25,5 +25,12 @@
         {
             Closed = true;
         }
+
+        public override string ToString()
+        {
+            return Closed
+                   ? "#"
+                   : Value.ToString();
+        }
     }
 }

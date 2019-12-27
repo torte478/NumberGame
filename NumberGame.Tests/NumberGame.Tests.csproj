@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cell_Should.cs" />
-    <Compile Include="FirstStepSolution_Should.cs" />
+    <Compile Include="FirstStepAlgorithm_Should.cs" />
     <Compile Include="Game_Should.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
