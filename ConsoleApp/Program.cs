@@ -6,7 +6,8 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            var game = Game.CreateDefault();
+            var game = Game.CreateDefault(
+                        next: (_) => new CellTuple());
             var ui = new UI(game);
 
             ui.Start();

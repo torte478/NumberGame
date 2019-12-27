@@ -2,12 +2,28 @@
 {
     public struct Cell
     {
-        public uint Value { get; }
-        public bool Closed { get; }
+        public static Cell Create(uint value)
+        {
+            return new Cell(value, false);
+        }
 
-        public Cell(uint value) : this()
+        public static Cell CreateClosed()
+        {
+            return new Cell(uint.MaxValue, true);
+        }
+
+        public uint Value { get; }
+        public bool Closed { get; private set; }
+
+        private Cell(uint value, bool closed) : this()
         {
             Value = value;
+            Closed = closed;
+        }
+
+        public void Close()
+        {
+            Closed = true;
         }
     }
 }

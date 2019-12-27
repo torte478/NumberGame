@@ -11,7 +11,7 @@ namespace NumberGame.Tests
         [SetUp]
         public void SetUp()
         {
-            game = Game.CreateDefault();
+            game = Game.CreateDefault((_) => new CellTuple());
             cells = game.ToCells();
         }
 
@@ -22,20 +22,12 @@ namespace NumberGame.Tests
         }
 
         [Test]
-        [TestCase(0, 0, 1, TestName = "First cell")]
-        [TestCase(2, 6, 8, TestName = "Last cell")]
+        [TestCase(0, 0, 1, TestName = "First cell is 1")]
+        [TestCase(2, 6, 8, TestName = "Last cell is 8")]
         public void FillDefatultCells_AfterCreate(int row, int column, int expected)
         {
             var actual = cells[row][column].Value;
             Assert.That(actual, Is.EqualTo(expected));
         }
-
-        //[Test]
-        //public void CloseFirstCell_AfterFirstStep()
-        //{
-        //    var next = game.Next();
-
-        //    Assert.That(next.ToCells()[0][0].Closed, Is.True);
-        //}
     }
 }

@@ -15,7 +15,14 @@ namespace NumberGame
             5, 1, 6, 1, 7, 1, 8
         };
 
-        public static Game CreateDefault()
+        public static Game CreateDefault(Func<Cell[][], CellTuple> next)
+        {
+            var cells = GenerateCells();
+            return new Game(next, cells);
+        }
+
+        //TODO : so bad method
+        private static Cell[][] GenerateCells()
         {
             var values = new Queue<uint>(defaultValues);
 
@@ -24,21 +31,28 @@ namespace NumberGame
             {
                 cells[i] = new Cell[Width];
                 for (var j = 0; j < cells[i].Length && values.Count > 0; ++j)
-                    cells[i][j] = new Cell(values.Dequeue());
+                    cells[i][j] = Cell.Create(values.Dequeue());
             }
 
-            return new Game(cells);
+            return cells;
         }
 
         private readonly Cell[][] cells;
+        private readonly Func<Cell[][], CellTuple> next;
 
-        private Game(Cell[][] cells)
+        private Game(Func<Cell[][], CellTuple> next, Cell[][] cells)
         {
+            this.next = next;
             this.cells = cells;
         }
 
         public IGame Next()
         {
+            var tuple = next(cells);
+
+            cells[tuple.First.Item1][tuple.First.Item2].Close();
+            cells[tuple.Second.Item1][tuple.Second.Item2].Close();
+
             return this;
         }
 

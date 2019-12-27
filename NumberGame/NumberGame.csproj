@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cell.cs" />
+    <Compile Include="CellTuple.cs" />
+    <Compile Include="FirstStepSolution.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
