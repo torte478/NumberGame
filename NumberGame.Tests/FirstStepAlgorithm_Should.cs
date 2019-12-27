@@ -77,14 +77,14 @@ namespace NumberGame.Tests
                 "34"
             });
 
-            var (resolved, _) = new FirstStepAlgorithm((_) => new Logic(_), cells).Resolve();
+            var (resolved, _) = new FirstStepAlgorithm(true, (_) => new Logic(_), cells).Resolve();
 
             Assert.That(resolved, Is.False);
         }
 
         private static void CheckSolution((uint, uint) first, (uint, uint) second)
         {
-            var (_, next) = new FirstStepAlgorithm((_) => new Logic(_), cells).Resolve();
+            var (_, next) = new FirstStepAlgorithm(true, (_) => new Logic(_), cells).Resolve();
 
             Assert.That(next.First.Item1, Is.EqualTo(first.Item1), () => "(x, _) (_, _)");
             Assert.That(next.First.Item2, Is.EqualTo(first.Item2), () => "(_, x) (_, _)");
