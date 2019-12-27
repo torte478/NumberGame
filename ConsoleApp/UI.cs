@@ -21,7 +21,7 @@ namespace ConsoleApp
             {
                 DrawGame();
                 Thread.Sleep(speed);
-                NextStep();
+                game.Next();
             }
         }
 
@@ -30,19 +30,14 @@ namespace ConsoleApp
             var cells = game.ToCells();
             
             Console.Clear();
-            for (var i = 0; i < cells.Length; ++i)
+            for (var i = 0; i < cells.Height; ++i)
             {
-                for (var j = 0; j < cells[i].Length; ++j)
-                    Console.Write(cells[i][j]);
+                for (var j = 0; j < cells.Width; ++j)
+                    Console.Write(cells.At(i, j));
                 Console.WriteLine();
             }
             Console.WriteLine("===================");
             Console.WriteLine(game);
-        }
-
-        private void NextStep()
-        {
-            game = game.Next();
         }
     }
 }

@@ -25,7 +25,7 @@ namespace NumberGame
             {
                 var current = game.Value;
                 for (var i = 0; i < iterations; ++i)
-                    current = current.Next();
+                    current.Next();
 
                 result.Add(game.Key, current.ToStatistics());
             }

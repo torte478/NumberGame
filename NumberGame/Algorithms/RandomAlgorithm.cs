@@ -6,13 +6,11 @@ namespace NumberGame.Algorithms
     public sealed class RandomAlgorithm : IAlgorithm
     {
         private readonly Random random;
-        private readonly Func<Cell[][], ILogic> getLogic;
-        private readonly Cell[][] cells;
+        private readonly ICells cells;
 
-        public RandomAlgorithm(Func<Cell[][], ILogic> getLogic, Cell[][] cells)
+        public RandomAlgorithm(ICells cells)
         {
             random = new Random((int)DateTime.Now.Ticks);
-            this.getLogic = getLogic;
             this.cells = cells;
         }
 
@@ -32,17 +30,16 @@ namespace NumberGame.Algorithms
         {
             var available = new List<CellTuple>();
 
-            var logic = getLogic(cells);
-            for (uint i = 0; i < cells.Length; ++i)
-                for (uint j = 0; j < cells[i].Length; ++j)
+            for (uint i = 0; i < cells.Height; ++i)
+                for (uint j = 0; j < cells.Width; ++j)
                 {
                     var current = (i, j);
 
-                    var horizontal = logic.FindHorizontalFor(current);
+                    var horizontal = cells.FindHorizontalFor(current);
                     if (horizontal.Item1)
                         available.Add(horizontal.Item2);
 
-                    var vertical  = logic.FindVerticalFor(current);
+                    var vertical  = cells.FindVerticalFor(current);
                     if (vertical.Item1)
                         available.Add(vertical.Item2);
                 }

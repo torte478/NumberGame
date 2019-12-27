@@ -1,47 +1,37 @@
-﻿using System;
-
-namespace NumberGame.Algorithms
+﻿namespace NumberGame.Algorithms
 {
     public sealed class FirstStepAlgorithm : IAlgorithm
     {
-        private readonly bool horizontalOriented; //TODO : rename
-        private readonly Func<Cell[][], ILogic> getLogic; //TODO : rename
-        private readonly Cell[][] cells;
+        private readonly bool horizontal;
+        private readonly ICells cells;
 
-        public FirstStepAlgorithm(bool horizontalOriented, Func<Cell[][], ILogic> getLogic, Cell[][] cells)
+        public FirstStepAlgorithm(bool horizontal, ICells cells)
         {
-            this.horizontalOriented = horizontalOriented;
-            this.getLogic = getLogic;
+            this.horizontal = horizontal;
             this.cells = cells;
         }
 
         public (bool, CellTuple) Resolve()
         {
-            var logic = getLogic(cells);
-            for (uint i = 0; i < cells.Length; ++i)
-                for (uint j = 0; j < cells[i].Length; ++j)
+            for (uint i = 0; i < cells.Height; ++i)
+                for (uint j = 0; j < cells.Width; ++j)
                 {
                     var current = (i, j);
-                    var horizontal = logic.FindHorizontalFor(current);
-                    var vertical = logic.FindVerticalFor(current);
+                    var hor = cells.FindHorizontalFor(current);
+                    var vert = cells.FindVerticalFor(current);
 
-                    if (horizontalOriented)
-                    {
-                        if (horizontal.Item1)
-                            return horizontal;
-                        else if (vertical.Item1)
-                            return vertical;
-                    }
+                    (bool, CellTuple)[] neighbors;
+                    if (horizontal)
+                        neighbors = new[] { hor, vert };
                     else
-                    {
-                        if (vertical.Item1)
-                            return vertical;
-                        else if (horizontal.Item1)
-                            return horizontal;
-                    }
+                        neighbors = new[] { vert, hor };
+
+                    foreach (var neighbor in neighbors)
+                        if (neighbor.Item1)
+                            return neighbor;
                 }
 
-            return (false, new CellTuple()); //TODO : what are idiom
+            return (false, new CellTuple());
         }
     }
 }

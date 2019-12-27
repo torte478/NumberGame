@@ -2,8 +2,8 @@
 {
     public interface IGame
     {
-        IGame Next();
-        Cell[][] ToCells();
+        void Next();
+        ICells ToCells();
         Statistics ToStatistics();
     }
 }

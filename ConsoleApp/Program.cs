@@ -140,17 +140,17 @@ namespace ConsoleApp
 
         private static IGame CreateVerticalOriented()
         {
-            return Game.CreateDefault((cells) => new FirstStepAlgorithm(false, Logic.Create, cells).Resolve());
+            return Game.CreateDefault((cells) => new FirstStepAlgorithm(false, cells).Resolve());
         }
 
         private static IGame CreateHorizontalOriented()
         {
-            return Game.CreateDefault((cells) => new FirstStepAlgorithm(true, Logic.Create, cells).Resolve());
+            return Game.CreateDefault((cells) => new FirstStepAlgorithm(true, cells).Resolve());
         }
 
         private static IGame CreateRandom()
         {
-            return Game.CreateDefault((cells) => new RandomAlgorithm(Logic.Create, cells).Resolve());
+            return Game.CreateDefault((cells) => new RandomAlgorithm(cells).Resolve());
         }
     }
 }

@@ -1,17 +1,21 @@
 ﻿namespace NumberGame
 {
-    public sealed class Logic : ILogic
+    public sealed class Cells : ICells
     {
         private readonly Cell[][] cells;
 
-        public Logic(Cell[][] cells)
+        public int Height => cells.Length;
+
+        public int Width => cells[0].Length;
+
+        public Cells(Cell[][] cells)
         {
             this.cells = cells;
         }
 
-        public static ILogic Create(Cell[][] cells)
+        public static ICells Create(Cell[][] cells)
         {
-            return new Logic(cells);
+            return new Cells(cells);
         }
 
         public (bool, CellTuple) FindVerticalFor((uint, uint) first)
@@ -89,6 +93,11 @@
                 }
             }
             return (uint.MaxValue, uint.MaxValue);
+        }
+
+        public Cell At(int row, int column)
+        {
+            return cells[row][column];
         }
     }
 

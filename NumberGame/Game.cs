@@ -7,52 +7,49 @@ namespace NumberGame
 {
     public sealed class Game : IGame
     {
-        //TODO : replace
         #region cntr
-
-        private const uint Width = 9;
-        private const uint Height = 3;
-
-        private static uint[] defaultValues = new uint[]
+        private static uint[][] defaultValues = new uint[3][]
         {
-            1, 2, 3, 4, 5, 6, 7, 8, 9,
-            1, 1, 1, 2, 1, 3, 1, 4, 1,
-            5, 1, 6, 1, 7, 1, 8
+            new uint[] {1, 2, 3, 4, 5, 6, 7, 8, 9 },
+            new uint[] {1, 1, 1, 2, 1, 3, 1, 4, 1 },
+            new uint[] {5, 1, 6, 1, 7, 1, 8 }
         };
 
-        public static Game CreateDefault(Func<Cell[][], (bool, CellTuple)> next)
+        public static Game CreateDefault(Func<ICells, (bool, CellTuple)> next)
         {
             var cells = GenerateCells();
-            return new Game(next, cells);
+            return new Game(next, Cells.Create, cells);
         }
 
-        //TODO : so bad method
         private static Cell[][] GenerateCells()
         {
-            var values = new Queue<uint>(defaultValues);
-
-            var cells = new Cell[Height][];
+            var cells = new Cell[defaultValues.Length][];
             for (var i = 0; i < cells.Length; ++i)
             {
-                cells[i] = new Cell[Width];
-                for (var j = 0; j < cells[i].Length && values.Count > 0; ++j)
-                    cells[i][j] = new Cell(values.Dequeue());
+                cells[i] = new Cell[defaultValues[i].Length];
+                for (var j = 0; j < cells[i].Length; ++j)
+                    cells[i][j] = new Cell(defaultValues[i][j]);
             }
-
             return cells;
         }
 
         #endregion
 
         private readonly LinkedList<Cell[]> cells;
-        private readonly Func<Cell[][], (bool, CellTuple)> findNext;
-
+        private readonly Func<Cell[][], ICells> toCells;
+        private readonly Func<ICells, (bool, CellTuple)> findNext;
+        
         private uint iteration;
         private uint deletions;
 
-        public Game(Func<Cell[][], (bool, CellTuple)> findNext, Cell[][] input)
+        public Game(
+            Func<ICells, (bool, CellTuple)> findNext,
+            Func<Cell[][], ICells> toCells,
+            Cell[][] input)
         {
             this.findNext = findNext;
+            this.toCells = toCells;
+
             this.cells = new LinkedList<Cell[]>();
             for (var i = 0; i < input.Length; ++i)
             {
@@ -62,10 +59,10 @@ namespace NumberGame
             }
         }
 
-        public IGame Next()
+        public void Next()
         {
             if (cells.Count == 0)
-                return this;
+                return;
 
             (var resolved, var tuple) = findNext(ToCells());
 
@@ -79,7 +76,6 @@ namespace NumberGame
                 UpdateCells();
             }
             ++iteration;
-            return this; //TODO: wtf?
         }
 
         private void RemoveFullRows()
@@ -141,9 +137,12 @@ namespace NumberGame
             return new Queue<uint>(opened);
         }
 
-        public Cell[][] ToCells()
+        public ICells ToCells()
         {
-            return cells.ToArray(); //TODO : check immutable
+            var values = cells
+                            .Select(row => row.ToArray())
+                            .ToArray();
+            return toCells(values);
         }
 
         public override string ToString()

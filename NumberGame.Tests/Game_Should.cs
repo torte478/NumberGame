@@ -6,7 +6,7 @@ namespace NumberGame.Tests
     internal sealed class Game_Should
     {
         private Game game;
-        private Cell[][] cells;
+        private ICells cells;
 
         [SetUp]
         public void SetUp()
@@ -18,7 +18,7 @@ namespace NumberGame.Tests
         [Test]
         public void CreateDefaultCells_AfterCreate()
         {
-            Assert.That(cells.Length, Is.EqualTo(3));
+            Assert.That(cells.Height, Is.EqualTo(3));
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace NumberGame.Tests
         [TestCase(2, 6, 8, TestName = "Last cell is 8")]
         public void FillDefatultCells_AfterCreate(int row, int column, int expected)
         {
-            var actual = cells[row][column].Value;
+            var actual = cells.At(row,column).Value;
             Assert.That(actual, Is.EqualTo(expected));
         }
 
@@ -39,9 +39,10 @@ namespace NumberGame.Tests
                 "#2"
             });
 
-            var next = game.Next().ToCells();
+            game.Next();
+            var next = game.ToCells();
 
-            var actual = next[2][1].Value;
+            var actual = next.At(2, 1).Value;
             Assert.That(actual, Is.EqualTo(2));
         }
 
@@ -54,9 +55,10 @@ namespace NumberGame.Tests
                 "#2#",
             });
 
-            var next = game.Next().ToCells();
+            game.Next();
+            var next = game.ToCells();
 
-            var actual = next[2][2].Empty;
+            var actual = next.At(2, 2).Empty;
             Assert.That(actual, Is.True);
         }
 
@@ -69,11 +71,12 @@ namespace NumberGame.Tests
                 "#2_",
             });
 
-            var next = game.Next().ToCells();
+            game.Next();
+            var next = game.ToCells();
 
-            var actual = next[1][2].Value;
+            var actual = next.At(1, 2).Value;
             Assert.That(actual, Is.EqualTo(1));
-            Assert.That(next[2][2].Empty, Is.True);
+            Assert.That(next.At(2, 2).Empty, Is.True);
         }
 
         [Test]
@@ -87,11 +90,13 @@ namespace NumberGame.Tests
             });
             var game = new Game(
                 (_) => (true, new CellTuple { First = (1, 0), Second = (1, 1) }),
+                Cells.Create,
                 cells);
 
-            var next = game.Next().ToCells();
+            game.Next();
+            var next = game.ToCells();
 
-            Assert.That(next.Length, Is.EqualTo(2));
+            Assert.That(next.Height, Is.EqualTo(2));
         }
 
         private static Game CreateGame(string[] values)
@@ -99,6 +104,7 @@ namespace NumberGame.Tests
             var cells = Utility.BuildCells(values);
             var game = new Game(
                 (_) => (false, new CellTuple()),
+                Cells.Create,
                 cells);
             return game;
         }
