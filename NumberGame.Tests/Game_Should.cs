@@ -11,7 +11,7 @@ namespace NumberGame.Tests
         [SetUp]
         public void SetUp()
         {
-            game = Game.CreateDefault((_) => new CellTuple());
+            game = Game.CreateDefault((_) => (true, new CellTuple()));
             cells = game.ToCells();
         }
 
@@ -28,6 +28,61 @@ namespace NumberGame.Tests
         {
             var actual = cells[row][column].Value;
             Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void FillCells_WhenAvailableStepsNotExists()
+        {
+            var game = CreateGame(new[]
+            {
+                "1#",
+                "#2"
+            });
+
+            var next = game.Next().ToCells();
+
+            var actual = next[2][1].Value;
+            Assert.That(actual, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void FillCells_WhenRowIsNotComplete()
+        {
+            var game = CreateGame(new[]
+            {
+                "1##",
+                "#2#",
+            });
+
+            var next = game.Next().ToCells();
+
+            var actual = next[2][2].Empty;
+            Assert.That(actual, Is.True);
+        }
+
+        [Test]
+        public void FillCells_WhenCurrentCellRowIsNotComplete()
+        {
+            var game = CreateGame(new[]
+            {
+                "1##",
+                "#2_",
+            });
+
+            var next = game.Next().ToCells();
+
+            var actual = next[1][2].Value;
+            Assert.That(actual, Is.EqualTo(1));
+            Assert.That(next[2][2].Empty, Is.True);
+        }
+
+        private static Game CreateGame(string[] values)
+        {
+            var cells = Utility.BuildCells(values);
+            var game = new Game(
+                (_) => (false, new CellTuple()),
+                cells);
+            return game;
         }
     }
 }

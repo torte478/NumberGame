@@ -94,26 +94,7 @@ namespace NumberGame.Tests
 
         private static void BuildCells(string[] values)
         {
-            cells = new Cell[values.Length][];
-            for (var i = 0; i < values.Length; ++i)
-            {
-                cells[i] = new Cell[values[i].Length];
-                for (var j = 0; j < values[i].Length; ++j)
-                    cells[i][j] = ToCell(values[i][j]);
-            }
-        }
-
-        private static Cell ToCell(char ch)
-        {
-            if (ch == '#')
-            {
-                return Cell.CreateClosed();
-            }
-            else
-            {
-                var value = (uint)Char.GetNumericValue(ch);
-                return Cell.Create(value);
-            }
+            cells = Utility.BuildCells(values);
         }
     }
 }

@@ -6,12 +6,12 @@ namespace ConsoleApp
 {
     internal sealed class UI
     {
-        private const ushort SleepDuration = 500;
-
+        private readonly int speed;
         private IGame game;
 
-        public UI(IGame game)
+        public UI(int speed, IGame game)
         {
+            this.speed = speed;
             this.game = game;
         }
 
@@ -20,7 +20,7 @@ namespace ConsoleApp
             while (true)
             {
                 DrawGame();
-                Sleep();
+                Thread.Sleep(speed);
                 NextStep();
             }
         }
@@ -28,19 +28,19 @@ namespace ConsoleApp
         private void DrawGame()
         {
             var cells = game.ToCells();
-            //TODO: next
+            
             Console.Clear();
-            Console.WriteLine(cells.ToString());
+            for (var i = 0; i < cells.Length; ++i)
+            {
+                for (var j = 0; j < cells[i].Length; ++j)
+                    Console.Write(cells[i][j]);
+                Console.WriteLine();
+            }
         }
 
         private void NextStep()
         {
             game = game.Next();
-        }
-
-        private static void Sleep()
-        {
-            Thread.Sleep(SleepDuration);
         }
     }
 }

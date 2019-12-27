@@ -8,7 +8,7 @@ namespace NumberGame.Tests
         [Test]
         public void BeClosed_AfterDefaultCreate()
         {
-            var cell = Cell.CreateClosed();
+            var cell = new Cell();
 
             Assert.That(cell.Closed, Is.True);
         }
@@ -16,7 +16,7 @@ namespace NumberGame.Tests
         [Test]
         public void BeOpened_AfterCreateWithValue()
         {
-            var cell = Cell.Create(5);
+            var cell = new Cell(5);
 
             Assert.That(cell.Closed, Is.False);
         }

@@ -7,8 +7,8 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
             var game = Game.CreateDefault(
-                        next: (_) => new CellTuple());
-            var ui = new UI(game);
+                        next: (_) => new FirstStepAlgorithm(_).Resolve());
+            var ui = new UI(1000, game);
 
             ui.Start();
         }

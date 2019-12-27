@@ -2,34 +2,30 @@
 {
     public struct Cell
     {
-        public static Cell Create(uint value)
-        {
-            return new Cell(value, false);
-        }
+        private uint? value;
+        private bool? closed;
+        private bool? empty;
 
-        public static Cell CreateClosed()
-        {
-            return new Cell(uint.MaxValue, true);
-        }
+        public uint Value { get { return value ?? uint.MaxValue; } }
+        public bool Closed { get { return closed ?? true; } private set { closed = value; } }
+        public bool Empty { get { return empty ?? true; } }
 
-        public uint Value { get; }
-        public bool Closed { get; private set; }
-
-        private Cell(uint value, bool closed) : this()
+        public Cell(uint value) : this()
         {
-            Value = value;
-            Closed = closed;
+            this.value = value;
+            this.closed = false;
+            this.empty = false;
         }
 
         public void Close()
         {
-            Closed = true;
+            closed = true;
         }
 
         public override string ToString()
         {
             return Closed
-                   ? "#"
+                   ? (Empty ? "_" : "#")
                    : Value.ToString();
         }
     }
