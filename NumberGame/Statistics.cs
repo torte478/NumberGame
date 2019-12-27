@@ -5,5 +5,6 @@
         public uint Iterations { get; set; }
         public uint Total { get; set; }
         public uint Closed { get; set; }
+        public uint Deletions { get; set; }
     }
 }

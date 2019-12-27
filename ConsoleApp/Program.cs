@@ -13,7 +13,7 @@ namespace ConsoleApp
                                         (_) => new Logic(_)
                                         , cells)
                                     .Resolve());
-            var ui = new UI(1000, game);
+            var ui = new UI(500, game);
 
             ui.Start();
         }

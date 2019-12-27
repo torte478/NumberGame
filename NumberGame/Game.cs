@@ -48,6 +48,7 @@ namespace NumberGame
         private readonly Func<Cell[][], (bool, CellTuple)> findNext;
 
         private uint iteration;
+        private uint deletions;
 
         public Game(Func<Cell[][], (bool, CellTuple)> findNext, Cell[][] input)
         {
@@ -63,11 +64,15 @@ namespace NumberGame
 
         public IGame Next()
         {
+            if (cells.Count == 0)
+                return this;
+
             (var resolved, var tuple) = findNext(ToCells());
 
             if (resolved)
             {
                 CloseCells(tuple);
+                RemoveFullRows();
             }
             else
             {
@@ -75,6 +80,18 @@ namespace NumberGame
             }
             ++iteration;
             return this; //TODO: wtf?
+        }
+
+        private void RemoveFullRows()
+        {
+            var removed = cells
+                            .Where(row => row.All(cell => cell.Closed))
+                            .ToArray();
+            foreach (var row in removed)
+            {
+                cells.Remove(row);
+                ++deletions;
+            }
         }
 
         private void UpdateCells()
@@ -135,6 +152,7 @@ namespace NumberGame
 
             var stat = ToStatistics();
             sb.AppendLine($"Step: {stat.Iterations}");
+            sb.AppendLine($"Deleted: {stat.Deletions}");
             sb.AppendLine($"Total: {stat.Total}");
             sb.AppendLine($"Closed: {stat.Closed} ({stat.Closed * 100.0 / stat.Total} %)");
             return sb.ToString();
@@ -154,9 +172,17 @@ namespace NumberGame
                         ++closed;
                 }
 
+            //hack
+            if (total == 0)
+            {
+                total = 1;
+                closed = 1;
+            }
+
             return new Statistics
             {
                 Iterations = iteration,
+                Deletions = deletions,
                 Total = (uint)total,
                 Closed = (uint)closed,
             };

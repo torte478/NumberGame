@@ -76,6 +76,24 @@ namespace NumberGame.Tests
             Assert.That(next[2][2].Empty, Is.True);
         }
 
+        [Test]
+        public void RemoveRow_WhenItFullyClosed()
+        {
+            var cells = Utility.BuildCells(new[]
+            {
+                "1#",
+                "22",
+                "#1"
+            });
+            var game = new Game(
+                (_) => (true, new CellTuple { First = (1, 0), Second = (1, 1) }),
+                cells);
+
+            var next = game.Next().ToCells();
+
+            Assert.That(next.Length, Is.EqualTo(2));
+        }
+
         private static Game CreateGame(string[] values)
         {
             var cells = Utility.BuildCells(values);
