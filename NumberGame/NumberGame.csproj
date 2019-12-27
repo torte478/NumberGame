@@ -46,6 +46,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="CellTuple.cs" />
     <Compile Include="Algorithms\FirstStepAlgorithm.cs" />
+    <Compile Include="Competition.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="Algorithms\IAlgorithm.cs" />

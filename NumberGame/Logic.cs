@@ -9,6 +9,11 @@
             this.cells = cells;
         }
 
+        public static ILogic Create(Cell[][] cells)
+        {
+            return new Logic(cells);
+        }
+
         public (bool, CellTuple) FindVerticalFor((uint, uint) first)
         {
             var second = FindVertical(first);
