@@ -1,4 +1,5 @@
 ﻿using NumberGame;
+using NumberGame.Algorithms;
 
 namespace ConsoleApp
 {

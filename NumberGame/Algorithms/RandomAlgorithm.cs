@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NumberGame
+namespace NumberGame.Algorithms
 {
     public sealed class RandomAlgorithm : IAlgorithm
     {

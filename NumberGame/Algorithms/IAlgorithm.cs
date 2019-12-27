@@ -1,4 +1,4 @@
-﻿namespace NumberGame
+﻿namespace NumberGame.Algorithms
 {
     public interface IAlgorithm
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NumberGame
+namespace NumberGame.Algorithms
 {
     public sealed class FirstStepAlgorithm : IAlgorithm
     {
