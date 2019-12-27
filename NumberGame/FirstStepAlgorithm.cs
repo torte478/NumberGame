@@ -4,11 +4,13 @@ namespace NumberGame
 {
     public sealed class FirstStepAlgorithm : IAlgorithm
     {
+        private readonly bool horizontalOriented; //TODO : rename
         private readonly Func<Cell[][], ILogic> getLogic; //TODO : rename
         private readonly Cell[][] cells;
 
-        public FirstStepAlgorithm(Func<Cell[][], ILogic> getLogic, Cell[][] cells)
+        public FirstStepAlgorithm(bool horizontalOriented, Func<Cell[][], ILogic> getLogic, Cell[][] cells)
         {
+            this.horizontalOriented = horizontalOriented;
             this.getLogic = getLogic;
             this.cells = cells;
         }
@@ -23,10 +25,20 @@ namespace NumberGame
                     var horizontal = logic.FindHorizontalFor(current);
                     var vertical = logic.FindVerticalFor(current);
 
-                    if (horizontal.Item1)
-                        return horizontal;
-                    else if (vertical.Item1)
-                        return vertical;
+                    if (horizontalOriented)
+                    {
+                        if (horizontal.Item1)
+                            return horizontal;
+                        else if (vertical.Item1)
+                            return vertical;
+                    }
+                    else
+                    {
+                        if (vertical.Item1)
+                            return vertical;
+                        else if (horizontal.Item1)
+                            return horizontal;
+                    }
                 }
 
             return (false, new CellTuple()); //TODO : what are idiom

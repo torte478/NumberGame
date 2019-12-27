@@ -8,7 +8,7 @@ namespace ConsoleApp
         {
             var game = Game.CreateDefault(
                         next: (cells) =>
-                                    new FirstStepAlgorithm(
+                                    new FirstStepAlgorithm(false,
                                     //new RandomAlgorithm(
                                         (_) => new Logic(_)
                                         , cells)
