@@ -4,5 +4,6 @@
     {
         IGame Next();
         Cell[][] ToCells();
+        Statistics ToStatistics();
     }
 }

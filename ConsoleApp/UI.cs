@@ -36,6 +36,8 @@ namespace ConsoleApp
                     Console.Write(cells[i][j]);
                 Console.WriteLine();
             }
+            Console.WriteLine("===================");
+            Console.WriteLine(game);
         }
 
         private void NextStep()

@@ -7,9 +7,9 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
             var game = Game.CreateDefault(
-                        next: (cells) => 
-                                    //new FirstStepAlgorithm(
-                                    new RandomAlgorithm(
+                        next: (cells) =>
+                                    new FirstStepAlgorithm(
+                                    //new RandomAlgorithm(
                                         (_) => new Logic(_)
                                         , cells)
                                     .Resolve());

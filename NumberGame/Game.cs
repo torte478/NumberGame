@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace NumberGame
 {
@@ -46,6 +47,8 @@ namespace NumberGame
         private readonly LinkedList<Cell[]> cells;
         private readonly Func<Cell[][], (bool, CellTuple)> findNext;
 
+        private uint iteration;
+
         public Game(Func<Cell[][], (bool, CellTuple)> findNext, Cell[][] input)
         {
             this.findNext = findNext;
@@ -70,6 +73,7 @@ namespace NumberGame
             {
                 UpdateCells();
             }
+            ++iteration;
             return this; //TODO: wtf?
         }
 
@@ -108,6 +112,7 @@ namespace NumberGame
         {
             cells.ElementAt((int)tuple.First.Item1)[tuple.First.Item2].Close();
             cells.ElementAt((int)tuple.Second.Item1)[tuple.Second.Item2].Close();
+            cells.ElementAt((int)tuple.Second.Item1)[tuple.Second.Item2].Close();
         }
         private Queue<uint> GetOpenedCells()
         {
@@ -122,6 +127,39 @@ namespace NumberGame
         public Cell[][] ToCells()
         {
             return cells.ToArray(); //TODO : check immutable
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+
+            var stat = ToStatistics();
+            sb.AppendLine($"Step: {stat.Iterations}");
+            sb.AppendLine($"Total: {stat.Total}");
+            sb.AppendLine($"Closed: {stat.Closed} ({stat.Closed * 100.0 / stat.Total} %)");
+            return sb.ToString();
+        }
+
+        public Statistics ToStatistics()
+        {
+            var total = 0;
+            var closed = 0;
+            foreach (var row in cells)
+                foreach (var cell in row)
+                {
+                    if (cell.Empty) break;
+
+                    ++total;
+                    if (cell.Closed)
+                        ++closed;
+                }
+
+            return new Statistics
+            {
+                Iterations = iteration,
+                Total = (uint)total,
+                Closed = (uint)closed,
+            };
         }
     }
 }
