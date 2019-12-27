@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace NumberGame.Algorithms
 {
+    /// <summary>
+    /// Algorithm, that set random from allowed steps
+    /// </summary>
     public sealed class RandomAlgorithm : IAlgorithm
     {
         private readonly Random random;
@@ -14,6 +17,11 @@ namespace NumberGame.Algorithms
             this.cells = cells;
         }
 
+        /// <summary>
+        /// Find available step
+        /// </summary>
+        /// <returns>'true' and cuple of cell coordinates when step exists
+        /// and 'false' and garbage on other case</returns>
         public (bool, CellTuple) Resolve()
         {
             var steps = FindAllAvailableSteps();

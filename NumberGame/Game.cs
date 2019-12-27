@@ -5,6 +5,9 @@ using System.Text;
 
 namespace NumberGame
 {
+    /// <summary>
+    /// Implementation of general game logic
+    /// </summary>
     public sealed class Game : IGame
     {
         #region cntr
@@ -15,6 +18,10 @@ namespace NumberGame
             new uint[] {5, 1, 6, 1, 7, 1, 8 }
         };
 
+        /// <summary>
+        /// Create game with default start values
+        /// </summary>
+        /// <param name="next">Function for next step search</param>
         public static Game CreateDefault(Func<ICells, (bool, CellTuple)> next)
         {
             var cells = GenerateCells();
@@ -42,6 +49,12 @@ namespace NumberGame
         private uint iteration;
         private uint deletions;
 
+        /// <summary>
+        /// Implementation of general game logic
+        /// </summary>
+        /// <param name="findNext">function for next step search</param>
+        /// <param name="toCells">factory method for createing ICells instances</param>
+        /// <param name="input">start field values</param>
         public Game(
             Func<ICells, (bool, CellTuple)> findNext,
             Func<Cell[][], ICells> toCells,
@@ -59,6 +72,9 @@ namespace NumberGame
             }
         }
 
+        /// <summary>
+        /// Make next step
+        /// </summary>
         public void Next()
         {
             if (cells.Count == 0)
@@ -137,6 +153,9 @@ namespace NumberGame
             return new Queue<uint>(opened);
         }
 
+        /// <summary>
+        /// Get cells of game field
+        /// </summary>
         public ICells ToCells()
         {
             var values = cells
@@ -157,6 +176,9 @@ namespace NumberGame
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Get statistics of current game
+        /// </summary>
         public Statistics ToStatistics()
         {
             var total = 0;

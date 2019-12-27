@@ -1,29 +1,53 @@
 ﻿namespace NumberGame
 {
+    /// <summary>
+    /// Logic of work with game board
+    /// </summary>
     public sealed class Cells : ICells
     {
         private readonly Cell[][] cells;
 
+        /// <summary>
+        /// Count of rows on board
+        /// </summary>
         public int Height => cells.Length;
-
+        /// <summary>
+        /// Count of columns on board
+        /// </summary>
         public int Width => cells[0].Length;
 
+        /// <summary>
+        /// Logic of work with game board
+        /// </summary>
+        /// <param name="cells">Implementaion of cells</param>
         public Cells(Cell[][] cells)
         {
             this.cells = cells;
         }
 
+        /// <summary>
+        /// Alias for constructor
+        /// </summary>
+        /// <param name="cells">Implementation of cells</param>
         public static ICells Create(Cell[][] cells)
         {
             return new Cells(cells);
         }
 
+        /// <summary>
+        /// Find vertical neighbor for cell
+        /// </summary>
+        /// <param name="cell">Coordinates of start cell</param>
         public (bool, CellTuple) FindVerticalFor((uint, uint) first)
         {
             var second = FindVertical(first);
             return CheckMatch(first, second);
         }
 
+        /// <summary>
+        /// Find horizontal neighbor for cell
+        /// </summary>
+        /// <param name="cell">Coordinates of start cell</param>
         public (bool, CellTuple) FindHorizontalFor((uint, uint) first)
         {
             var second = FindHorizontal(first);
@@ -95,6 +119,11 @@
             return (uint.MaxValue, uint.MaxValue);
         }
 
+        /// <summary>
+        /// Get cell on that coordinates
+        /// </summary>
+        /// <param name="row">Index of row</param>
+        /// <param name="column">Index of column</param>
         public Cell At(int row, int column)
         {
             return cells[row][column];
